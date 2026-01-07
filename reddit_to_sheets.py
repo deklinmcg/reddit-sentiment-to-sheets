@@ -1,4 +1,9 @@
 import os
+print("=== SCRIPT START ===")
+print("GOOGLE_SHEET_ID present?", bool(os.getenv("GOOGLE_SHEET_ID")))
+print("SERVICE JSON present?", bool(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")))
+print("Working directory files:", os.listdir("."))
+print("=== END PRECHECK ===")
 import json
 import time
 from datetime import datetime, timezone
@@ -261,3 +266,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+print("=== SCRIPT END (reached end of file) ===")
