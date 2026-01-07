@@ -153,6 +153,14 @@ def main():
 
     # Connect to sheet
     sh = connect_gsheet(service_json, sheet_id)
+    # --- SMOKE TEST: prove we can write at least one cell ---
+    try:
+        smoke = ensure_worksheet(sh, "SMOKE_TEST", ["status", "time_utc"])
+        smoke.append_row(["hello from github actions", utc_now_iso()], value_input_option="RAW")
+        print("SMOKE TEST: wrote a row to SMOKE_TEST")
+    except Exception as e:
+        print("SMOKE TEST FAILED:", repr(e))
+        raise
 
     analyzer = SentimentIntensityAnalyzer()
 
@@ -267,3 +275,4 @@ def main():
 if __name__ == "__main__":
     main()
 print("=== SCRIPT END (reached end of file) ===")
+
