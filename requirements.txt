@@ -1,6 +1,6 @@
-praw
+requests
 pyyaml
-pandas
 gspread
-oauth2client
-textblob
+google-auth
+vaderSentiment
+pandas
