@@ -85,19 +85,16 @@ def connect_gsheet(service_json: str, sheet_id: str):
 
 
 def ensure_worksheet(sh, title: str, headers: list[str]):
-    title = safe_sheet_title(title)
+title = safe_sheet_title(title)
     try:
         ws = sh.worksheet(title)
     except gspread.WorksheetNotFound:
         ws = sh.add_worksheet(title=title, rows=1000, cols=max(10, len(headers)))
 
-    # Ensure header row exists
-    existing = ws.get_all_values()
-    if not existing:
-        ws.append_row(headers, value_input_option="RAW")
-    else:
-        # If first row doesn't match, we won't overwrite; we just proceed.
-        pass
+    # Force headers into row 1 if it's empty (more reliable than get_all_values())
+    first_row = ws.row_values(1)
+    if not first_row or all(str(c).strip() == "" for c in first_row):
+        ws.update("A1", [headers])  # write headers in one shot
     return ws
 
 
@@ -275,4 +272,5 @@ def main():
 if __name__ == "__main__":
     main()
 print("=== SCRIPT END (reached end of file) ===")
+
 
