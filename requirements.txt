@@ -1,0 +1,6 @@
+praw
+pyyaml
+pandas
+gspread
+oauth2client
+textblob
