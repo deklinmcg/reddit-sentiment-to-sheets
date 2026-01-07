@@ -1,6 +1,36 @@
 topics:
-  - name: AI music
-    subreddits:
-      - artificial
-      - MachineLearning
-      - musicproduction
+  - name: Enterprise TTS needs
+    subreddits: [artificial, MachineLearning, LocalLLaMA, startups, SaaS]
+    keywords: [enterprise, procurement, security, compliance, SOC2, ISO, SSO, SAML, SCIM, audit, GDPR, data residency, on-prem, self-host, SLA, latency, scale, call center, contact center]
+
+  - name: TTS needs generally
+    subreddits: [artificial, MachineLearning, LocalLLaMA, voiceacting, audiobooks]
+    keywords: [tts, text to speech, speech synthesis, voice model, narration, audiobook, realtime, low latency, pronunciation, accents, multilingual]
+
+  - name: TTS sentiment and pain points
+    subreddits: [artificial, MachineLearning, LocalLLaMA, voiceacting, audiobooks]
+    keywords: [tts, text to speech, robotic, unnatural, prosody, hallucination, mispronounce, pronunciation, latency, cost, pricing, limit, restriction, banned, watermark, detection, voice clone]
+
+  - name: TTS feature requests
+    subreddits: [artificial, MachineLearning, LocalLLaMA, SaaS]
+    keywords: [tts, feature request, roadmap, please add, would love, need, wish, request, support, api, sdk, webhook, ssml, emotions, styles, voices, custom dictionary, pronunciation dictionary, timestamps]
+
+  - name: Voice to voice for singing needs
+    subreddits: [musicproduction, audioengineering, singing, WeAreTheMusicMakers, edmproduction]
+    keywords: [voice to voice, v2v, conversion, singing, vocal, vocals, pitch, formant, vibrato, harmonies, artifacts, latency, natural, realism]
+
+  - name: Artist sentiment on voice to voice conversion
+    subreddits: [singing, WeAreTheMusicMakers, musicproduction, audioengineering]
+    keywords: [voice to voice, conversion, cover, impersonation, consent, permission, royalties, licensing, unethical, theft, fair, credit]
+
+  - name: Artist and industry sentiment on AI singing and voices
+    subreddits: [musicindustry, WeAreTheMusicMakers, musicproduction, artificial]
+    keywords: [ai singing, ai voice, voice clone, vocal clone, deepfake, consent, licensing, rights, royalties, lawsuits, label, publisher, union]
+
+  - name: Artist and industry sentiment on AI music tools
+    subreddits: [musicindustry, WeAreTheMusicMakers, musicproduction, edmproduction, audioengineering]
+    keywords: [ai music, generative, copilot, assistant, plugin, tool, workflow, productivity, replace, augment, creativity, ethics, licensing]
+
+  - name: Industry sentiment on AI voice
+    subreddits: [artificial, MachineLearning, startups, SaaS, technology]
+    keywords: [ai voice, voice cloning, synthetic voice, watermarking, regulation, policy, compliance, safety, trust, fraud, scams]
