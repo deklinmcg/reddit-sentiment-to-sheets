@@ -51,23 +51,46 @@ def sentiment_label(score: float) -> str:
 def fetch_subreddit_posts(subreddit: str, limit: int, user_agent: str) -> list[dict]:
     url = f"https://www.reddit.com/r/{subreddit}/new.json"
     params = {"limit": str(limit)}
-    headers = {"User-Agent": user_agent}
+    headers = {
+        "User-Agent": user_agent,
+        "Accept": "application/json",
+    }
 
-    r = requests.get(url, params=params, headers=headers, timeout=30)
-    # Reddit can respond with 429 if hit too fast
-    if r.status_code != 200:
-        raise RuntimeError(f"Reddit HTTP {r.status_code} for r/{subreddit}: {r.text[:200]}")
+    # Progressive backoff helps a lot on GitHub Actions IP ranges
+    backoff_seconds = [2, 5, 10, 20]
+    last_status = None
+    last_preview = ""
 
-    data = r.json()
-    children = data.get("data", {}).get("children", [])
-    posts = []
-    for c in children:
-        p = c.get("data", {})
-        # Skip stickied or removed posts, keep it simple
-        if p.get("stickied"):
+    for attempt, wait_s in enumerate([0] + backoff_seconds, start=1):
+        if wait_s:
+            time.sleep(wait_s)
+
+        r = requests.get(url, params=params, headers=headers, timeout=30)
+        last_status = r.status_code
+        last_preview = (r.text or "")[:120].replace("\n", " ")
+        print(f"  Reddit: r/{subreddit} attempt {attempt} → HTTP {last_status} ({last_preview})")
+
+        if r.status_code == 200:
+            data = r.json()
+            children = data.get("data", {}).get("children", [])
+            posts = []
+            for c in children:
+                p = c.get("data", {})
+                if p.get("stickied"):
+                    continue
+                posts.append(p)
+            print(f"  Reddit: r/{subreddit} got {len(posts)} posts")
+            return posts
+
+        # If rate-limited, retry
+        if r.status_code == 429:
             continue
-        posts.append(p)
-    return posts
+
+        # Other failures: stop retrying for this subreddit
+        raise RuntimeError(f"Reddit HTTP {r.status_code} for r/{subreddit}: {last_preview}")
+
+    raise RuntimeError(f"Reddit kept rate-limiting (HTTP 429) for r/{subreddit}")
+
 
 
 # ---------- Google Sheets ----------
@@ -273,6 +296,7 @@ def main():
 if __name__ == "__main__":
     main()
 print("=== SCRIPT END (reached end of file) ===")
+
 
 
 
