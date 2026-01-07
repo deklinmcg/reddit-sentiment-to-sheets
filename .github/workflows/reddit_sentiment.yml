@@ -1,0 +1,29 @@
+name: Reddit Sentiment to Sheets
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 6 */3 * *"  # every 3 days at 06:15 UTC
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run script
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          REDDIT_USER_AGENT: "sentiment-bot/1.0 (by u/your_username)"
+          REQUEST_SLEEP_SECONDS: "1.5"
+        run: python reddit_to_sheets.py
